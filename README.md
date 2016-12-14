@@ -21,7 +21,10 @@ You will then see a list of options which are fairly self explanatory.
 
 ### Configuration
 To configure borg_interface please edit the borg_interface.cfg file.
-All the options have to be placed under the [DEFAULT] section.
+All the options have to be placed under the [DEFAULT] section. The config file
+itself can reside at ~/.config/borg_interface/borg_interface.cfg (recommended)
+or at ~/.borg_interface.cfg or next to the borg_interface.sh script.
+
 The proper syntax is:
 
 ```
