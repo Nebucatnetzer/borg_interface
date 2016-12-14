@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 import os
-import configparser
-import subprocess
 import interface_functions
 import interface_variables
 
@@ -9,8 +7,8 @@ chosen_activity = None
 
 # The main menu starts there
 interface_functions.configuration()
+os.system('clear')
 while chosen_activity != 0:
-    os.system('clear')
     print("What would you like to do?")
     # Start the chosen activity and go back to the activity selector.
     print("1: List Backups, 2: Show archive details, 3: Mount Archive, "
