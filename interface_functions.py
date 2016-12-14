@@ -39,6 +39,7 @@ def restore_archive():
     print()
     print("Archive extracted to " + restore_path)
     print()
+    pause()
 
 def configuration():
     # setup the config parser
