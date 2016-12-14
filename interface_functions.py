@@ -13,7 +13,7 @@ def show_info():
     os.system('clear')
     os.system('borg info ::' + archive_name)
     print()
-    input("Press a key to continue.")
+    pause()
 
 def mount_archive():
     archive_name = input("Please enter the archive name: ")
@@ -22,8 +22,10 @@ def mount_archive():
             os.makedirs(int_vars.mount_point)
     os.system('borg mount  ::' + archive_name + " " + int_vars.mount_point)
     print()
-    print("Archive mounted at " + int_vars.mount_point + "/")
+    print("Archive mounted at " + int_vars.mount_point + "/.")
+    print("The archive will remain mounted as long this programm is running.")
     print()
+    pause()
 
 def restore_archive():
     archive_name = input("Please enter the archive name: ")
@@ -70,3 +72,6 @@ def exit():
         print()
         os.system('fusermount -u' + " " + int_vars.mount_point)
         os.rmdir(int_vars.mount_point)
+
+def pause():
+    input("Press any key to continue.")
