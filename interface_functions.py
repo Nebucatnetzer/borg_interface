@@ -44,7 +44,6 @@ def configuration():
     # read config file
     config.read('borg_interface.cfg')
     # assign the repository variable
-    print(config['DEFAULT']['server'])
     if 'server' in config['DEFAULT']:
         repository = (config['DEFAULT']['user']
                      + "@"
