@@ -44,9 +44,20 @@ def restore_archive():
 def configuration():
     # setup the config parser
     config = configparser.ConfigParser()
-    # read config file
-    config.read('borg_interface.cfg')
-    # assign the repository variable
+    # check whether the config file exists either in the home folder or next to
+    # the binary
+    home = os.getenv('HOME')
+    if os.path.isfile(home + '/.config/borg_interface/borg_interface.cfg'):
+        config.read(home + '/.config/borg_interface/borg_interface.cfg')
+    elif os.path.isfile(home + '/.borg_interface.cfg'):
+        config.read(home + '/.borg_interface.cfg')
+    elif os.path.isfile('borg_interface.cfg'):
+        config.read('borg_interface.cfg')
+    else:
+        print("Configuration file not found.")
+        quit()
+    # assign the repository variable depending wheter it's a remote or a local
+    # repository
     if 'server' in config['DEFAULT']:
         repository = (config['DEFAULT']['user']
                      + "@"
