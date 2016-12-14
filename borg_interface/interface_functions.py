@@ -53,10 +53,8 @@ def configuration():
                      + config['DEFAULT']['server']
                      + ":"
                      + config['DEFAULT']['repository_path'])
-        print("remote archive")
     else:
         repository = config['DEFAULT']['repository_path']
-        print("local archive")
     input()
     # assign the password variable
     password = config['DEFAULT']['password']
