@@ -16,7 +16,7 @@ or simply download it and extract the zip to your prefered location.:
 ### Starting
 Before starting the application make sure that you have configured it properly.
 See the section [Configuration](https://git.2li.ch/Nebucatnetzer/borg_interface#configuration) for more details.
-To start the application simply execute the borg_interface file.
+To start the application simply execute the borg_interface.sh file.
 You will then see a list of options which are fairly self explanatory.
 
 ### Configuration

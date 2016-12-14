@@ -55,7 +55,6 @@ def configuration():
                      + config['DEFAULT']['repository_path'])
     else:
         repository = config['DEFAULT']['repository_path']
-    input()
     # assign the password variable
     password = config['DEFAULT']['password']
     # set the environment variables
