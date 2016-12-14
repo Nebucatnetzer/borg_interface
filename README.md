@@ -39,7 +39,9 @@ This is needed for both a remote and a local repository.
 defines the repository password
 
 ### Example Config
+```
 server: testserver.local
 user: borg
 repository_path: /home/borg/backup/repository
 password: foo
+```
