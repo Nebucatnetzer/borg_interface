@@ -40,6 +40,7 @@ defines the repository password
 
 ### Example Config
 ```
+[DEFAULT]
 server: testserver.local
 user: borg
 repository_path: /home/borg/backup/repository
