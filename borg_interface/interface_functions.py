@@ -55,10 +55,10 @@ def configuration():
     # the binary
     home = os.getenv('HOME')
     config_file = "borg_interface.cfg"
-    config_long_path =  os.path.join(home, ".config/borg_interface/",
-                                     config_file)
-    if os.path.isfile(config_long_path):
-        config.read(config_long_path)
+    config_path = ".config/borg_interface/"
+    config_full_path = os.path.join(home, config_path, config_file)
+    if os.path.isfile(config_full_path):
+        config.read(config_full_path)
     elif os.path.isfile(config_file):
         config.read(config_file)
     else:
@@ -93,7 +93,7 @@ def exit():
         sys.exit(0)
 
 def pause():
-    input("Press any key to continue.")
+    input("Press Enter to continue.")
 
 def prompt_archive_name():
     int_vars.archive_name = input("Please enter the archive name: ")
