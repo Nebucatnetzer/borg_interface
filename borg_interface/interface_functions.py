@@ -1,4 +1,5 @@
 import os
+import sys
 import configparser
 import subprocess
 import interface_variables
@@ -58,7 +59,7 @@ def configuration():
         config.read(config_file)
     else:
         print("Configuration file not found.")
-        quit()
+        sys.exit(1)
     # assign the repository variable depending wheter it's a remote or a local
     # repository
     if 'server' in config['DEFAULT']:
@@ -78,12 +79,14 @@ def configuration():
 def exit():
     if (not int_vars.mount_point):
         print()
+        sys.exit(0)
     else:
         print()
         print("Unmount Archive and remove folder.")
         print()
         os.system('fusermount -u' + " " + int_vars.mount_point)
         os.rmdir(int_vars.mount_point)
+        sys.exit(0)
 
 def pause():
     input("Press any key to continue.")
