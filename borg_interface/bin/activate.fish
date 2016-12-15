@@ -32,7 +32,7 @@ end
 # unset irrelavent variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/andreas/git_repos/borg_interface"
+set -gx VIRTUAL_ENV "/home/andreas/git_repos/borg_interface/borg_interface"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

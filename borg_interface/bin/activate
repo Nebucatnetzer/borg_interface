@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelavent variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/andreas/git_repos/borg_interface"
+VIRTUAL_ENV="/home/andreas/git_repos/borg_interface/borg_interface"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
