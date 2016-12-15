@@ -47,12 +47,15 @@ def configuration():
     # check whether the config file exists either in the home folder or next to
     # the binary
     home = os.getenv('HOME')
-    if os.path.isfile(home + '/.config/borg_interface/borg_interface.cfg'):
-        config.read(home + '/.config/borg_interface/borg_interface.cfg')
-    elif os.path.isfile(home + '/.borg_interface.cfg'):
-        config.read(home + '/.borg_interface.cfg')
-    elif os.path.isfile('borg_interface.cfg'):
-        config.read('borg_interface.cfg')
+    config_file = "borg_interface.cfg"
+    config_long_path = home + "/.config/borg_interface/" + config_file
+    config_short_path = home + "/." + config_file
+    if os.path.isfile(config_long_path):
+        config.read(config_long_path)
+    elif os.path.isfile(config_short_path):
+        config.read(config_short_path)
+    elif os.path.isfile(config_file):
+        config.read(config_file)
     else:
         print("Configuration file not found.")
         quit()
