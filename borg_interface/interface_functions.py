@@ -3,16 +3,39 @@ import sys
 import configparser
 import subprocess
 import interface_variables
+import curses
 
 int_vars = interface_variables
 
+def get_param(prompt_string):
+     screen.clear()
+     screen.border(0)
+     screen.addstr(2, 2, prompt_string)
+     screen.refresh()
+     input = screen.getstr(10, 10, 60)
+     return input
+
+def draw_screen():
+     screen = curses.initscr()
+     screen.clear()
+     screen.border(0)
+     screen.addstr(2, 2, "Please enter a number...")
+     screen.addstr(4, 4, "1 - List archives in repository")
+     screen.addstr(5, 4, "2 - Show archive details")
+     screen.addstr(6, 4, "3 - Mount archive")
+     screen.addstr(7, 4, "4 - Restore an archive to specific location")
+     screen.addstr(8, 4, "0 - Exit")
+     screen.refresh()
+
 def list_archives():
+    curses.endwin()
     borg_list = subprocess.Popen(['borg', 'list'], stdout=subprocess.PIPE)
     less_output = subprocess.Popen(['less'], stdin=borg_list.stdout)
     borg_list.wait()
     less_output.wait()
 
 def show_info():
+    curses.endwin()
     prompt_archive_name()
     os.system('clear')
     p = subprocess.Popen(['borg', 'info', '::' + int_vars.archive_name])
@@ -21,6 +44,7 @@ def show_info():
     pause()
 
 def mount_archive():
+    curses.endwin()
     prompt_archive_name()
     int_vars.mount_point = "/tmp/" + int_vars.archive_name
     if not os.path.exists(int_vars.mount_point):
@@ -35,6 +59,7 @@ def mount_archive():
     pause()
 
 def restore_archive():
+    curses.endwin()
     prompt_archive_name()
     restore_path = input("Please enter the path where you want to "
                          "restore to: ")
@@ -81,6 +106,7 @@ def configuration():
     os.environ['BORG_PASSPHRASE'] = password
 
 def exit():
+    curses.endwin()
     if (not int_vars.mount_point):
         print()
         sys.exit(0)
