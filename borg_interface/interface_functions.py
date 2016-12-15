@@ -10,18 +10,20 @@ def list_archives():
     os.system('borg list | less')
 
 def show_info():
-    archive_name = input("Please enter the archive name: ")
+    prompt_archive_name()
     os.system('clear')
-    os.system('borg info ::' + archive_name)
+    os.system('borg info ::' + int_vars.archive_name)
     print()
     pause()
 
 def mount_archive():
-    archive_name = input("Please enter the archive name: ")
-    int_vars.mount_point = "/tmp/" + archive_name
+    prompt_archive_name()
+    int_vars.mount_point = "/tmp/" + int_vars.archive_name
     if not os.path.exists(int_vars.mount_point):
             os.makedirs(int_vars.mount_point)
-    os.system('borg mount  ::' + archive_name + " " + int_vars.mount_point)
+    os.system('borg mount  ::'
+              + int_vars.archive_name + " "
+              + int_vars.mount_point)
     print()
     print("Archive mounted at " + int_vars.mount_point + "/.")
     print("The archive will remain mounted as long this programm is running.")
@@ -29,12 +31,12 @@ def mount_archive():
     pause()
 
 def restore_archive():
-    archive_name = input("Please enter the archive name: ")
+    prompt_archive_name()
     restore_path = input("Please enter the path where you want to "
                          "restore to: ")
     if not os.path.exists(restore_path):
         os.makedirs(restore_path)
-    p = subprocess.Popen(['borg', 'extract', '::' + archive_name]
+    p = subprocess.Popen(['borg', 'extract', '::' + int_vars.archive_name]
         ,cwd=restore_path)
     p.wait()
     print()
@@ -90,3 +92,6 @@ def exit():
 
 def pause():
     input("Press any key to continue.")
+
+def prompt_archive_name():
+    int_vars.archive_name = input("Please enter the archive name: ")
