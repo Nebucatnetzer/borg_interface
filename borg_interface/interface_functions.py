@@ -55,10 +55,10 @@ def configuration():
     # the binary
     home = os.getenv('HOME')
     config_file = "borg_interface.cfg"
-    config_path = ".config/borg_interface/"
-    config_full_path = os.path.join(home, config_path, config_file)
-    if os.path.isfile(config_full_path):
-        config.read(config_full_path)
+    config_folder = ".config/borg_interface/"
+    config_path = os.path.join(home, config_folder, config_file)
+    if os.path.isfile(config_path):
+        config.read(config_path)
     elif os.path.isfile(config_file):
         config.read(config_file)
     else:
