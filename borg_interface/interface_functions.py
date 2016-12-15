@@ -7,12 +7,16 @@ import interface_variables
 int_vars = interface_variables
 
 def list_archives():
-    os.system('borg list | less')
+    borg_list = subprocess.Popen(['borg', 'list'], stdout=subprocess.PIPE)
+    less_output = subprocess.Popen(['less'], stdin=borg_list.stdout)
+    borg_list.wait()
+    less_output.wait()
 
 def show_info():
     prompt_archive_name()
     os.system('clear')
-    os.system('borg info ::' + int_vars.archive_name)
+    p = subprocess.Popen(['borg', 'info', '::' + int_vars.archive_name])
+    p.wait()
     print()
     pause()
 
@@ -21,9 +25,9 @@ def mount_archive():
     int_vars.mount_point = "/tmp/" + int_vars.archive_name
     if not os.path.exists(int_vars.mount_point):
             os.makedirs(int_vars.mount_point)
-    os.system('borg mount  ::'
-              + int_vars.archive_name + " "
-              + int_vars.mount_point)
+    p = subprocess.Popen(['borg', 'mount', '::' + int_vars.archive_name,
+                          int_vars.mount_point])
+    p.wait()
     print()
     print("Archive mounted at " + int_vars.mount_point + "/.")
     print("The archive will remain mounted as long this programm is running.")
