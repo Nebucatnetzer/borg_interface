@@ -59,7 +59,8 @@ def mount_archive():
                           int_vars.mount_point])
     p.wait()
     draw_screen(2, 2, "Archive mounted at " + int_vars.mount_point + "/.")
-    screen.addstr(3, 2, "The archive will remain mounted as long this programm is running.")
+    screen.addstr(3, 2, "The archive will remain mounted as long this programm "
+                  "is running.")
     screen.refresh()
     ncurses_pause()
 
