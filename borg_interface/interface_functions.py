@@ -45,12 +45,9 @@ def show_info():
     archive_name = get_param("Please enter the archive name: ").decode('utf-8')
     curses.endwin()
     os.system('clear')
-    p = subprocess.Popen(['borg', 'info', '::' + archive_name],
-                         stdout=subprocess.PIPE)
+    p = subprocess.Popen(['borg', 'info', '::' + archive_name])
     p.wait()
-    info_output = p.communicate()[0]
-    draw_screen(2, 2, info_output)
-    ncurses_pause(20)
+    pause()
 
 def mount_archive():
     archive_name = get_param("Please enter the archive name: ").decode('utf-8')
