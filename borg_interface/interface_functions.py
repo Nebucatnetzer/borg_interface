@@ -6,18 +6,17 @@ import interface_variables
 import curses
 
 int_vars = interface_variables
+screen = curses.initscr()
 
 def get_param(prompt_string):
-    screen = curses.initscr()
     screen.clear()
     screen.border(0)
     screen.addstr(2, 2, prompt_string)
     screen.refresh()
-    input = screen.getstr(10, 10, 60)
+    input = screen.getstr(3, 2, 60)
     return input
 
 def draw_screen():
-    screen = curses.initscr()
     screen.clear()
     screen.border(0)
     screen.addstr(2, 2, "Please enter a number...")
