@@ -45,10 +45,12 @@ def show_info():
     archive_name = get_param("Please enter the archive name: ").decode('utf-8')
     curses.endwin()
     os.system('clear')
-    p = subprocess.Popen(['borg', 'info', '::' + archive_name])
+    p = subprocess.Popen(['borg', 'info', '::' + archive_name],
+                         stdout=subprocess.PIPE)
     p.wait()
-    print()
-    pause()
+    info_output = p.communicate()[0]
+    draw_screen(2, 2, info_output)
+    ncurses_pause(20)
 
 def mount_archive():
     archive_name = get_param("Please enter the archive name: ").decode('utf-8')
@@ -62,7 +64,7 @@ def mount_archive():
     screen.addstr(3, 2, "The archive will remain mounted as long this programm "
                   "is running.")
     screen.refresh()
-    ncurses_pause()
+    ncurses_pause(5)
 
 def restore_archive():
     archive_name = get_param("Please enter the archive name: ").decode('utf-8')
@@ -75,7 +77,7 @@ def restore_archive():
         ,cwd=restore_path)
     p.wait()
     draw_screen(2, 2, "Archive extracted to " + restore_path)
-    ncurses_pause()
+    ncurses_pause(5)
 
 def configuration():
     # setup the config parser
@@ -123,9 +125,9 @@ def exit():
         os.rmdir(int_vars.mount_point)
         sys.exit(0)
 
-def ncurses_pause():
+def ncurses_pause(c):
     screen.border(0)
-    screen.addstr(5, 2, "Press Enter to continue...")
+    screen.addstr(c, 2, "Press Enter to continue...")
     screen.refresh()
     input = screen.getstr(3, 2, 60)
     return input
