@@ -57,8 +57,7 @@ def mount_archive():
     int_vars.mount_point = os.path.join('/tmp', archive_name)
     if not os.path.exists(int_vars.mount_point):
             os.makedirs(int_vars.mount_point)
-    p = subprocess.Popen(['borg', 'mount', '::' + archive_name,
-                          int_vars.mount_point])
+    p = subprocess.Popen(['borg', 'mount', '::' + archive_name, int_vars.mount_point])
     p.wait()
     draw_screen(2, 2, "Archive mounted at " + int_vars.mount_point + "/.")
     screen.addstr(3, 2, "The archive will remain mounted as long this programm "
