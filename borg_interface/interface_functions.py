@@ -8,24 +8,25 @@ import curses
 int_vars = interface_variables
 
 def get_param(prompt_string):
-     screen.clear()
-     screen.border(0)
-     screen.addstr(2, 2, prompt_string)
-     screen.refresh()
-     input = screen.getstr(10, 10, 60)
-     return input
+    screen = curses.initscr()
+    screen.clear()
+    screen.border(0)
+    screen.addstr(2, 2, prompt_string)
+    screen.refresh()
+    input = screen.getstr(10, 10, 60)
+    return input
 
 def draw_screen():
-     screen = curses.initscr()
-     screen.clear()
-     screen.border(0)
-     screen.addstr(2, 2, "Please enter a number...")
-     screen.addstr(4, 4, "1 - List archives in repository")
-     screen.addstr(5, 4, "2 - Show archive details")
-     screen.addstr(6, 4, "3 - Mount archive")
-     screen.addstr(7, 4, "4 - Restore an archive to specific location")
-     screen.addstr(8, 4, "0 - Exit")
-     screen.refresh()
+    screen = curses.initscr()
+    screen.clear()
+    screen.border(0)
+    screen.addstr(2, 2, "Please enter a number...")
+    screen.addstr(4, 4, "1 - List archives in repository")
+    screen.addstr(5, 4, "2 - Show archive details")
+    screen.addstr(6, 4, "3 - Mount archive")
+    screen.addstr(7, 4, "4 - Restore an archive to specific location")
+    screen.addstr(8, 4, "0 - Exit")
+    screen.refresh()
 
 def list_archives():
     curses.endwin()
@@ -35,21 +36,21 @@ def list_archives():
     less_output.wait()
 
 def show_info():
+    archive_name = get_param("Please enter the archive name: ")
     curses.endwin()
-    prompt_archive_name()
     os.system('clear')
-    p = subprocess.Popen(['borg', 'info', '::' + int_vars.archive_name])
+    p = subprocess.Popen(['borg', 'info', '::' + archive_name])
     p.wait()
     print()
     pause()
 
 def mount_archive():
+    archive_name = get_param("Please enter the archive name: ")
     curses.endwin()
-    prompt_archive_name()
-    int_vars.mount_point = "/tmp/" + int_vars.archive_name
+    int_vars.mount_point = os.path.join('/tmp', archive_name)
     if not os.path.exists(int_vars.mount_point):
             os.makedirs(int_vars.mount_point)
-    p = subprocess.Popen(['borg', 'mount', '::' + int_vars.archive_name,
+    p = subprocess.Popen(['borg', 'mount', '::' + archive_name,
                           int_vars.mount_point])
     p.wait()
     print()
@@ -109,6 +110,7 @@ def exit():
     curses.endwin()
     if (not int_vars.mount_point):
         print()
+        os.system('clear')
         sys.exit(0)
     else:
         print()
@@ -116,10 +118,8 @@ def exit():
         print()
         os.system('fusermount -u' + " " + int_vars.mount_point)
         os.rmdir(int_vars.mount_point)
+        os.system('clear')
         sys.exit(0)
 
 def pause():
     input("Press Enter to continue.")
-
-def prompt_archive_name():
-    int_vars.archive_name = input("Please enter the archive name: ")
