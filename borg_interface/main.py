@@ -8,7 +8,7 @@ chosen_activity = None
 # The main menu starts there
 interface_functions.configuration()
 while chosen_activity != 0:
-    interface_functions.draw_screen()
+    interface_functions.draw_menu()
     screen = curses.initscr()
     try:
         chosen_activity = screen.getch()

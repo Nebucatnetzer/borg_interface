@@ -16,7 +16,7 @@ def get_param(prompt_string):
     input = screen.getstr(3, 2, 60)
     return input
 
-def draw_screen():
+def draw_menu():
     screen.clear()
     screen.border(0)
     screen.addstr(2, 2, "Please enter a number...")
@@ -27,6 +27,13 @@ def draw_screen():
     screen.addstr(8, 4, "0 - Exit")
     screen.refresh()
 
+def draw_screen(r, c, message):
+    screen.clear()
+    screen.border(0)
+    screen.addstr(r, c, message)
+    screen.refresh()
+
+
 def list_archives():
     curses.endwin()
     borg_list = subprocess.Popen(['borg', 'list'], stdout=subprocess.PIPE)
@@ -35,7 +42,7 @@ def list_archives():
     less_output.wait()
 
 def show_info():
-    archive_name = get_param("Please enter the archive name: ")
+    archive_name = get_param("Please enter the archive name: ").decode('utf-8')
     curses.endwin()
     os.system('clear')
     p = subprocess.Popen(['borg', 'info', '::' + archive_name])
@@ -44,34 +51,30 @@ def show_info():
     pause()
 
 def mount_archive():
-    archive_name = get_param("Please enter the archive name: ")
-    curses.endwin()
+    archive_name = get_param("Please enter the archive name: ").decode('utf-8')
     int_vars.mount_point = os.path.join('/tmp', archive_name)
     if not os.path.exists(int_vars.mount_point):
             os.makedirs(int_vars.mount_point)
     p = subprocess.Popen(['borg', 'mount', '::' + archive_name,
                           int_vars.mount_point])
     p.wait()
-    print()
-    print("Archive mounted at " + int_vars.mount_point + "/.")
-    print("The archive will remain mounted as long this programm is running.")
-    print()
-    pause()
+    draw_screen(2, 2, "Archive mounted at " + int_vars.mount_point + "/.")
+    screen.addstr(3, 2, "The archive will remain mounted as long this programm is running.")
+    screen.refresh()
+    ncurses_pause()
 
 def restore_archive():
-    curses.endwin()
-    prompt_archive_name()
-    restore_path = input("Please enter the path where you want to "
-                         "restore to: ")
+    archive_name = get_param("Please enter the archive name: ").decode('utf-8')
+    restore_path = get_param("Please enter the path where you want to "
+                         "restore to: ").decode('utf-8')
+    draw_screen(2, 2, "Please wait while the archive gets restored.")
     if not os.path.exists(restore_path):
         os.makedirs(restore_path)
-    p = subprocess.Popen(['borg', 'extract', '::' + int_vars.archive_name]
+    p = subprocess.Popen(['borg', 'extract', '::' + archive_name]
         ,cwd=restore_path)
     p.wait()
-    print()
-    print("Archive extracted to " + restore_path)
-    print()
-    pause()
+    draw_screen(2, 2, "Archive extracted to " + restore_path)
+    ncurses_pause()
 
 def configuration():
     # setup the config parser
@@ -106,19 +109,25 @@ def configuration():
     os.environ['BORG_PASSPHRASE'] = password
 
 def exit():
-    curses.endwin()
     if (not int_vars.mount_point):
-        print()
+        curses.endwin()
         os.system('clear')
         sys.exit(0)
     else:
-        print()
+        curses.endwin()
+        os.system('clear')
         print("Unmount Archive and remove folder.")
         print()
         os.system('fusermount -u' + " " + int_vars.mount_point)
         os.rmdir(int_vars.mount_point)
-        os.system('clear')
         sys.exit(0)
 
+def ncurses_pause():
+    screen.border(0)
+    screen.addstr(5, 2, "Press Enter to continue...")
+    screen.refresh()
+    input = screen.getstr(3, 2, 60)
+    return input
+
 def pause():
-    input("Press Enter to continue.")
+    input("Press Enter to continue...")
