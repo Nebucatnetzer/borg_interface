@@ -1,0 +1,10 @@
+#!/home/andreas/git_repos/borg_interface/borg_interface/bin/python3
+# EASY-INSTALL-ENTRY-SCRIPT: 'borgbackup==1.0.8','console_scripts','borg'
+__requires__ = 'borgbackup==1.0.8'
+import sys
+from pkg_resources import load_entry_point
+
+if __name__ == '__main__':
+    sys.exit(
+        load_entry_point('borgbackup==1.0.8', 'console_scripts', 'borg')()
+    )
