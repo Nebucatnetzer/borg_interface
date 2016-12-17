@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-import os
 import interface_functions
-import interface_variables
 import curses
+
 chosen_activity = None
 
 # The main menu starts there
@@ -24,12 +23,12 @@ while chosen_activity != 0:
             # mounts a chosen archive to /tmp/archive name
             interface_functions.mount_archive()
         if chosen_activity == ord('4'):
-           interface_functions.restore_archive()
+            interface_functions.restore_archive()
         if chosen_activity == ord('5'):
-           interface_functions.delete_archive()
+            interface_functions.delete_archive()
         if chosen_activity == ord('6'):
-           interface_functions.create_archive()
+            interface_functions.create_archive()
         elif chosen_activity == ord('0'):
-           interface_functions.exit()
+            interface_functions.exit()
     except ValueError:
         print("Please enter a full number.")

@@ -4,10 +4,10 @@ import configparser
 import subprocess
 import interface_variables
 import curses
-import re
 
 int_vars = interface_variables
 screen = curses.initscr()
+
 
 def get_param(prompt_string):
     screen.clear()
@@ -16,6 +16,7 @@ def get_param(prompt_string):
     screen.refresh()
     input = screen.getstr(3, 2, 60)
     return input
+
 
 def draw_menu():
     screen.clear()
@@ -29,6 +30,7 @@ def draw_menu():
     screen.addstr(9, 4, "6 - Create a backup")
     screen.addstr(10, 4, "0 - Exit")
     screen.refresh()
+
 
 def draw_screen(r, c, message):
     screen.clear()
@@ -44,6 +46,7 @@ def list_archives():
     borg_list.wait()
     less_output.wait()
 
+
 def show_info():
     archive_name = get_param("Please enter the archive name: ").decode('utf-8')
     curses.endwin()
@@ -52,32 +55,35 @@ def show_info():
     p.wait()
     pause()
 
+
 def mount_archive():
     archive_name = get_param("Please enter the archive name: ").decode('utf-8')
     int_vars.mount_point = os.path.join('/tmp', archive_name)
     if not os.path.exists(int_vars.mount_point):
-            os.makedirs(int_vars.mount_point)
+        os.makedirs(int_vars.mount_point)
     p = subprocess.Popen(['borg', 'mount', '::' + archive_name,
                           int_vars.mount_point])
     p.wait()
     draw_screen(2, 2, "Archive mounted at " + int_vars.mount_point + "/.")
-    screen.addstr(3, 2, "The archive will remain mounted as long this programm "
-                  "is running.")
+    screen.addstr(3, 2, "The archive will remain mounted as long this program "
+                        "is running.")
     screen.refresh()
     ncurses_pause(5)
+
 
 def restore_archive():
     archive_name = get_param("Please enter the archive name: ").decode('utf-8')
     restore_path = get_param("Please enter the path where you want to "
-                         "restore to: ").decode('utf-8')
+                             "restore to: ").decode('utf-8')
     draw_screen(2, 2, "Please wait while the archive gets restored.")
     if not os.path.exists(restore_path):
         os.makedirs(restore_path)
     p = subprocess.Popen(['borg', 'extract', '::' + archive_name]
-        ,cwd=restore_path)
+                         , cwd=restore_path)
     p.wait()
     draw_screen(2, 2, "Archive extracted to " + restore_path)
     ncurses_pause(5)
+
 
 def delete_archive():
     archive_name = get_param("Please enter the archive name: ").decode('utf-8')
@@ -86,6 +92,7 @@ def delete_archive():
     p.wait()
     draw_screen(2, 2, "Archive " + archive_name + " deleted")
     ncurses_pause(5)
+
 
 def create_archive():
     archive_name = get_param("Please enter an archive name: ").decode('utf-8')
@@ -97,6 +104,7 @@ def create_archive():
     p.wait()
     draw_screen(2, 2, "Archive of " + path_to_backup + " created.")
     ncurses_pause(5)
+
 
 def configuration():
     # setup the config parser
@@ -113,15 +121,15 @@ def configuration():
         config.read(config_file)
     else:
         print("Configuration file not found.")
-        exit()
-    # assign the repository variable depending wheter it's a remote or a local
+        sys.exit(0)
+    # assign the repository variable depending whether it's a remote or a local
     # repository
     if 'server' in config['DEFAULT']:
         repository = (config['DEFAULT']['user']
-                     + "@"
-                     + config['DEFAULT']['server']
-                     + ":"
-                     + config['DEFAULT']['repository_path'])
+                      + "@"
+                      + config['DEFAULT']['server']
+                      + ":"
+                      + config['DEFAULT']['repository_path'])
         int_vars.server = config['DEFAULT']['server']
     else:
         repository = config['DEFAULT']['repository_path']
@@ -131,8 +139,9 @@ def configuration():
     os.environ['BORG_REPO'] = repository
     os.environ['BORG_PASSPHRASE'] = password
 
+
 def exit():
-    if (not int_vars.mount_point):
+    if not int_vars.mount_point:
         curses.endwin()
         os.system('clear')
         sys.exit(0)
@@ -145,12 +154,14 @@ def exit():
         os.rmdir(int_vars.mount_point)
         sys.exit(0)
 
+
 def ncurses_pause(c):
     screen.border(0)
     screen.addstr(c, 2, "Press Enter to continue...")
     screen.refresh()
     input = screen.getstr(3, 2, 60)
     return input
+
 
 def pause():
     input("Press Enter to continue...")
