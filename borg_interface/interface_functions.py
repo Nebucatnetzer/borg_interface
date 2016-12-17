@@ -122,6 +122,7 @@ def configuration():
                      + config['DEFAULT']['server']
                      + ":"
                      + config['DEFAULT']['repository_path'])
+        int_vars.server = config['DEFAULT']['server']
     else:
         repository = config['DEFAULT']['repository_path']
     # assign the password variable
