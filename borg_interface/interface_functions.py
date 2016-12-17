@@ -57,7 +57,8 @@ def mount_archive():
     int_vars.mount_point = os.path.join('/tmp', archive_name)
     if not os.path.exists(int_vars.mount_point):
             os.makedirs(int_vars.mount_point)
-    p = subprocess.Popen(['borg', 'mount', '::' + archive_name, int_vars.mount_point])
+    p = subprocess.Popen(['borg', 'mount', '::' + archive_name,
+                          int_vars.mount_point])
     p.wait()
     draw_screen(2, 2, "Archive mounted at " + int_vars.mount_point + "/.")
     screen.addstr(3, 2, "The archive will remain mounted as long this programm "
@@ -88,9 +89,11 @@ def delete_archive():
 
 def create_archive():
     archive_name = get_param("Please enter an archive name: ").decode('utf-8')
-    path_to_backup = get_param("Please enter the path to backup: ").decode('utf-8')
+    path_to_backup = get_param("Please enter the "
+                               "path to backup: ").decode('utf-8')
     draw_screen(2, 2, "Please wait while the backup gets created.")
-    p = subprocess.Popen(['borg', 'create', '::' + archive_name, path_to_backup])
+    p = subprocess.Popen(['borg', 'create', '::' + archive_name,
+                          path_to_backup])
     p.wait()
     draw_screen(2, 2, "Archive of " + path_to_backup + " created.")
     ncurses_pause(5)
