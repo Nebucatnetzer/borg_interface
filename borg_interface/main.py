@@ -25,6 +25,10 @@ while chosen_activity != 0:
             interface_functions.mount_archive()
         if chosen_activity == ord('4'):
            interface_functions.restore_archive()
+        if chosen_activity == ord('5'):
+           interface_functions.delete_archive()
+        if chosen_activity == ord('6'):
+           interface_functions.create_archive()
         elif chosen_activity == ord('0'):
            interface_functions.exit()
     except ValueError:

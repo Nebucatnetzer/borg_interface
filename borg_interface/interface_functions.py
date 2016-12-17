@@ -4,6 +4,7 @@ import configparser
 import subprocess
 import interface_variables
 import curses
+import re
 
 int_vars = interface_variables
 screen = curses.initscr()
@@ -24,7 +25,9 @@ def draw_menu():
     screen.addstr(5, 4, "2 - Show archive details")
     screen.addstr(6, 4, "3 - Mount archive")
     screen.addstr(7, 4, "4 - Restore an archive to specific location")
-    screen.addstr(8, 4, "0 - Exit")
+    screen.addstr(8, 4, "5 - Delete an archive")
+    screen.addstr(9, 4, "6 - Create a backup")
+    screen.addstr(10, 4, "0 - Exit")
     screen.refresh()
 
 def draw_screen(r, c, message):
@@ -75,6 +78,23 @@ def restore_archive():
     draw_screen(2, 2, "Archive extracted to " + restore_path)
     ncurses_pause(5)
 
+def delete_archive():
+    archive_name = get_param("Please enter the archive name: ").decode('utf-8')
+    draw_screen(2, 2, "Please wait while the archive gets deleted.")
+    p = subprocess.Popen(['borg', 'delete', '::' + archive_name])
+    p.wait()
+    draw_screen(2, 2, "Archive " + archive_name + " deleted")
+    ncurses_pause(5)
+
+def create_archive():
+    archive_name = get_param("Please enter an archive name: ").decode('utf-8')
+    path_to_backup = get_param("Please enter the path to backup: ").decode('utf-8')
+    draw_screen(2, 2, "Please wait while the backup gets created.")
+    p = subprocess.Popen(['borg', 'create', '::' + archive_name, path_to_backup])
+    p.wait()
+    draw_screen(2, 2, "Archive of " + path_to_backup + " created.")
+    ncurses_pause(5)
+
 def configuration():
     # setup the config parser
     config = configparser.ConfigParser()
@@ -90,7 +110,7 @@ def configuration():
         config.read(config_file)
     else:
         print("Configuration file not found.")
-        sys.exit(1)
+        exit()
     # assign the repository variable depending wheter it's a remote or a local
     # repository
     if 'server' in config['DEFAULT']:
