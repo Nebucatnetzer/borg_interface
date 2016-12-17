@@ -6,10 +6,10 @@ import interface_variables
 import curses
 
 int_vars = interface_variables
-screen = curses.initscr()
 
 
 def get_param(prompt_string):
+    screen = curses.initscr()
     screen.clear()
     screen.border(0)
     screen.addstr(2, 2, prompt_string)
@@ -19,6 +19,7 @@ def get_param(prompt_string):
 
 
 def draw_menu():
+    screen = curses.initscr()
     screen.clear()
     screen.border(0)
     screen.addstr(2, 2, "Please enter a number...")
@@ -33,6 +34,7 @@ def draw_menu():
 
 
 def draw_screen(r, c, message):
+    screen = curses.initscr()
     screen.clear()
     screen.border(0)
     screen.addstr(r, c, message)
@@ -57,6 +59,7 @@ def show_info():
 
 
 def mount_archive():
+    screen = curses.initscr()
     archive_name = get_param("Please enter the archive name: ").decode('utf-8')
     int_vars.mount_point = os.path.join('/tmp', archive_name)
     if not os.path.exists(int_vars.mount_point):
@@ -156,6 +159,7 @@ def exit():
 
 
 def ncurses_pause(c):
+    screen = curses.initscr()
     screen.border(0)
     screen.addstr(c, 2, "Press Enter to continue...")
     screen.refresh()
