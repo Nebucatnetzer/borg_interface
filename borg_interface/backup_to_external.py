@@ -10,17 +10,24 @@ int_vars = interface_variables
 
 
 def take_backup():
-    response = subprocess.Popen(['ping', '-c', '1', 'fileserver.2li.local'])
+    response = subprocess.Popen(['ping', '-c', '1', 'fileserver.2li.local'],
+                               stdout=subprocess.PIPE)
     response.wait()
     returncode = response.returncode
     if returncode == 0:
         backup_home()
+        print()
+        print()
         backup_vms()
+        print()
+        print()
         prune_home()
+        print()
+        print()
         prune_vms()
     else:
         print("Server not available")
-        sys.exit(0)
+        sys.exit(1)
 
 
 def backup_home():
@@ -28,7 +35,9 @@ def backup_home():
     archive_name = (socket.gethostname() + "-home"
                     + time.strftime("_%Y-%m-%d_%H:%M"))
 
-    p = subprocess.Popen(['borg', 'create', '--exclude', '/home/andreas/.cache',
+    print("Backup " + archive_name)
+    p = subprocess.Popen(['borg', 'create', '-v', '--stats', '--exclude',
+                          '/home/andreas/.cache',
                           '--exclude', '/home/andreas/Downloads',
                           '::' + archive_name, path_to_backup])
     p.wait()
@@ -39,14 +48,17 @@ def backup_vms():
     archive_name = (socket.gethostname() + "-VMs"
                     + time.strftime("_%Y-%m-%d_%H:%M"))
 
-    p = subprocess.Popen(['borg', 'create',
+    print("Backup " + archive_name)
+    p = subprocess.Popen(['borg', 'create', '-v', '--stats',
                           '::' + archive_name, path_to_backup])
     p.wait()
 
 
 def prune_home():
     archive_name = (socket.gethostname() + "-home")
-    p = subprocess.Popen(['borg', 'prune', '--prefix', archive_name,
+    print("Prune " + archive_name)
+    p = subprocess.Popen(['borg', 'prune', '-v', '--stats', '--prefix',
+                          archive_name,
                           '--keep-hourly=24', '--keep-daily=7',
                           '--keep-weekly=4', '--keep-monthly=12',
                           '--keep-yearly=1'])
@@ -55,7 +67,9 @@ def prune_home():
 
 def prune_vms():
     archive_name = (socket.gethostname() + "-VMs")
-    p = subprocess.Popen(['borg', 'prune', '--prefix', archive_name,
+    print("Prune " + archive_name)
+    p = subprocess.Popen(['borg', 'prune', '-v', '--stats', '--prefix',
+                          archive_name,
                           '--keep-hourly=24', '--keep-daily=7',
                           '--keep-weekly=4', '--keep-monthly=12',
                           '--keep-yearly=1'])

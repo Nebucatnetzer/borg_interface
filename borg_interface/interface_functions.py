@@ -124,7 +124,7 @@ def configuration():
         config.read(config_file)
     else:
         print("Configuration file not found.")
-        sys.exit(0)
+        sys.exit(1)
     # assign the repository variable depending whether it's a remote or a local
     # repository
     if 'server' in config['DEFAULT']:
