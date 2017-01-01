@@ -60,3 +60,25 @@ user: borg
 repository_path: /home/borg/backup/repository
 password: foo
 ```
+
+### Backup by using cronjobs
+
+To make it easier to do automated backups I've created the backup_to_external.py
+function. To use it simply add a cronjob with:
+
+```
+crontab -e
+```
+
+Then enter a line like this for example:
+
+```
+0 * * * *  /path/to/borg_interface/backup_to_external.sh
+```
+
+Now your system will take a backup every hour.
+
+NOTE: Currently the backup path is hardcoded in the backup_to_external.py script 
+but should be quite easy to change. Basically you just need to change the
+path_to_backup variable. I will add a configuration option for the backup path
+at a later point.
