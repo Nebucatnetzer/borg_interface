@@ -1,6 +1,6 @@
 # borg_interface
 
-This application provides an interface to borg backup. At a later point it might 
+This application provides an interface to borg backup. At a later point it might
 as well work with restic.
 
 ### Installation
@@ -78,7 +78,7 @@ Then enter a line like this for example:
 
 Now your system will take a backup every hour.
 
-NOTE: Currently the backup path is hardcoded in the backup_to_external.py script 
+NOTE: Currently the backup path is hardcoded in the backup_to_external.py script
 but should be quite easy to change. Basically you just need to change the
 path_to_backup variable. I will add a configuration option for the backup path
 at a later point.
