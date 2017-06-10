@@ -16,7 +16,7 @@ while chosen_activity != 0:
             # less
             interface_functions.list_archives()
         if chosen_activity == ord('2'):
-            # Displays all the information related to the archive name the user 
+            # Displays all the information related to the archive name the user
             # enters
             interface_functions.show_info()
         if chosen_activity == ord('3'):
